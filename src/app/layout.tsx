@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, EB_Garamond } from "next/font/google";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { theme } from './theme'
+import { ThemeProvider } from '@mui/material/styles';
+
 
 import "./globals.css";
 
@@ -36,7 +40,11 @@ export default function RootLayout({
       <body
         className={`${ebGaramondSans.variable} antialased`}
       >
-        {children}
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
