@@ -1,14 +1,4 @@
-export interface Video {
-  name: string;
-  id: string;
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  color: string;
-  videos?: Video[]
-}
+import { Category } from "../types/campaign";
 
 const categories: Category[] = [
   {
@@ -51,12 +41,14 @@ const categories: Category[] = [
   {
     id: 2,
     name: "Categoria 2",
-    color: "#e6179d"
+    color: "#e6179d",
+    videos: []
   },
   {
     id: 3,
     name: "Categoria 2",
-    color: "#e6179d"
+    color: "#e6179d",
+    videos: []
   },
   {
     id: 4,

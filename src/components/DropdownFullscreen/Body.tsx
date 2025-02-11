@@ -2,9 +2,12 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { Category } from "@/app/mocks/categories";
+import { Category } from "@/app/types/campaign";
+import { useCategoryStore } from '@/app/stores/categoryStore';
 import VideoCard from '../common/VideoCard';
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
+import FormDialog from '../common/FormDialog';
+import CategoryForm from '../category/Form';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,6 +40,7 @@ function a11yProps(index: number) {
 
 export default function CategoriesTabs({ categories }: { categories: Category[] }) {
   const [value, setValue] = React.useState(0);
+  const { openModal, setInitialFormData, setOpenModal } = useCategoryStore();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -53,13 +57,21 @@ export default function CategoriesTabs({ categories }: { categories: Category[] 
       </Box>
       {categories.map((category, index) => {
         return (
-          <CustomTabPanel key={index} value={value} index={index}>
-            {category.videos?.map((video, index) => {
-              return <VideoCard key={index} id={video.id} name={video.name} />
-            })}
-          </CustomTabPanel>
+          <Stack key={index} direction={'column'} alignItems={'center'}>
+            {(value == index && (
+              <Button onClick={() => { setInitialFormData({ name: category.name, color: category.color }); setOpenModal(true) }}>Editar</Button>
+            ))}
+            <CustomTabPanel key={index} value={value} index={index}>
+              {category.videos?.map((video, index) => {
+                return <VideoCard key={index} id={video.id} name={video.name} />
+              })}
+            </CustomTabPanel>
+          </Stack>
         )
       })}
+      <FormDialog open={openModal} setOpen={setOpenModal}>
+        <CategoryForm />
+      </FormDialog>
     </Box>
   );
 }
